@@ -1,26 +1,37 @@
-<!-- # MPPI Trajectory Tracker -->
 <p align="center">
   <img src="media/sim_replays/case4.gif" width="600" alt="MPPI tracker following a self-crossing loop"/>
 </p>
 
 <h1 align="center">MPPI Trajectory Tracker</h1>
 
-A ROS2 MPPI controller that tracks a recorded path and avoids static and dynamic obstacles in real time..
+<p align="center">
+  <img src="https://img.shields.io/badge/ROS2-Jazzy-blue" alt="ROS2 Jazzy"/>
+  <img src="https://img.shields.io/badge/Python-3.12-yellow" alt="Python 3.12"/>
+  <img src="https://img.shields.io/badge/Sim-Gazebo-orange" alt="Gazebo"/>
+  <img src="https://img.shields.io/badge/License-MIT-green" alt="MIT License"/>
+</p>
+
+<p align="center">
+A ROS2 MPPI controller that tracks a recorded path and avoids static and dynamic obstacles in real time.
+</p>
+
+### Contents
+[Demo](#demo) · [Overview](#overview) · [Quick Start](#quick-start) · [Test Results](#test-results) · [How It Works](#how-it-works) · [Notes](#notes) · [Repository Structure](#repository-structure)
+
+---
 
 ## Demo
 
-Screen recordings (RViz + Gazebo) of every required scenario are in [`media/`](media/):
+| Case | Preview | Full video |
+|---|---|---|
+| **1 — Straight + obstacle** | <img src="media/sim_replays/case1.gif" width="220"/> | [`media/case1.mp4`](media/case1.mp4) |
+| **2 — Curved + obstacle** | <img src="media/sim_replays/case2.gif" width="220"/> | [`media/case2.mp4`](media/case2.mp4) |
+| **3 — Two obstacles flanking the path** | <img src="media/sim_replays/case3.gif" width="220"/> | [`media/case3.mp4`](media/case3.mp4) |
+| **4 — Self-crossing loop, no obstacles** | <img src="media/sim_replays/case4.gif" width="220"/> | [`media/case4.mp4`](media/case4.mp4) |
+| **Dynamic obstacle, dropped mid-run** | <img src="media/sim_replays/dynamic_obstacle.gif" width="220"/> | [`media/dynamic_obstacle.mp4`](media/dynamic_obstacle.mp4) |
+| **Baseline — no obstacles** | — | [`media/straight_no_obstacle.mp4`](media/straight_no_obstacle.mp4) |
 
-| Video | Shows |
-|---|---|
-| [`media/case1.mp4`](media/case1.mp4) | Case 1 — straight path, one obstacle: detour and rejoin |
-| [`media/case2.mp4`](media/case2.mp4) | Case 2 — curved path, obstacle mid-curve: detour and rejoin |
-| [`media/case3.mp4`](media/case3.mp4) | Case 3 — two obstacles flanking the path: threads between them |
-| [`media/case4.mp4`](media/case4.mp4) | Case 4 — self-crossing loop path, no obstacles: full loop, no circling |
-| [`media/dynamic_obstacle.mp4`](media/dynamic_obstacle.mp4) | Obstacle dropped in front of the robot mid-run |
-| [`media/straight_no_obstacle.mp4`](media/straight_no_obstacle.mp4) | Baseline: plain path tracking, no obstacles |
-
-`media/sim_replays/` also has plotted replays rendered straight from logged `/odom`, `/scan`, and `/cmd_vel` data — a second, data-level view of the same runs, useful for checking exact clearances and trajectories.
+The previews above are plotted replays rendered straight from logged `/odom`, `/scan`, and `/cmd_vel` data — green is the recorded path, red is the actual driven path. The linked `.mp4` files are the full RViz + Gazebo screen recordings.
 
 ---
 
@@ -60,21 +71,18 @@ All tuning listed in `config/mppi_params.yaml`.
 
 ## Test Results
 
-| Case | Setup | Result (video in `media/`) |
+| Case | Setup | Result |
 |---|---|---|
 | **1. Straight + obstacle** | One obstacle on a straight recorded path | Detours around it and rejoins the line, no contact |
 | **2. Curved + obstacle** | Obstacle on a recorded curve | Tracks the curve, detours around the obstacle, rejoins |
 | **3. Two obstacles flanking the path** | A cylinder on each side of the path, ~1.9m apart | Shifts to hold clearance and passes between them |
 | **4. Self-crossing loop** | Loop path that crosses itself, no obstacles | Follows the whole loop through the crossing, no circling |
 
-Full-length screen recordings per case are in [`media/`](media/); data-level replays are in `media/sim_replays/`.
-
-Dynamic obstacles: since the LiDAR scan is re-read fresh every 20Hz cycle with no caching, moving or newly-added obstacles get handled by the exact same code path as static ones. No special-casing needed — see `media/dynamic_obstacle.mp4`.
+Dynamic obstacles: since the LiDAR scan is re-read fresh every 20Hz cycle with no caching, moving or newly-added obstacles get handled by the exact same code path as static ones. No special-casing needed — see the dynamic obstacle demo above.
 
 ## How It Works
 
 ![MPPI system flowchart](media/mppi_flowchart.svg)
-
 
 ## Notes
 
@@ -129,6 +137,15 @@ A few values needed real iteration, not just a first guess:
 - No dedicated recovery behavior if the robot gets fully boxed in — it would just pick the least-bad sampled option rather than run an explicit recovery maneuver.
 - The local reference is built by stepping forward along the recorded path at a constant speed; there's no velocity profile smoothing for sharp curvature beyond what the cost function encourages implicitly.
 - The MPPI weighting here is a softmax over total trajectory cost — closer to a cross-entropy / path-integral hybrid than the full information-theoretic formulation from Williams et al. There's no explicit control-cost coupling term in the cost-to-go. In practice it behaves close to greedy once the obstacle term dominates, which is the intended decisive-avoidance behavior, but worth naming precisely.
+</details>
+
+<details>
+<summary><b>What I'd do next with more time</b></summary>
+<br>
+
+- Add the full information-theoretic control-cost coupling term to the MPPI update, rather than the current softmax-over-cost approximation.
+- Give the controller a reason to actively re-center in a symmetric obstacle corridor instead of just slowing through it — right now it treats "safe" as good enough rather than optimizing for margin.
+- Add an explicit recovery behavior for the fully-boxed-in case, instead of falling back to "least bad of the sampled options."
 </details>
 
 ## Repository Structure
