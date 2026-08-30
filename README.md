@@ -1,4 +1,9 @@
-# MPPI Trajectory Tracker
+<!-- # MPPI Trajectory Tracker -->
+<p align="center">
+  <img src="media/sim_replays/case4.gif" width="600" alt="MPPI tracker following a self-crossing loop"/>
+</p>
+
+<h1 align="center">MPPI Trajectory Tracker</h1>
 
 A ROS2 MPPI controller that tracks a recorded path and avoids static and dynamic obstacles in real time..
 
