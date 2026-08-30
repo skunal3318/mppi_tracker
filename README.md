@@ -105,6 +105,10 @@ Dynamic obstacles: since the LiDAR scan is re-read fresh every 20Hz cycle with n
 
 ## Code Reference
 
+<details>
+<summary><b>Code Reference — what each function does</b></summary>
+<br>
+
 **`record_path.py`**
 - `odom_callback()` — fires on every `/odom` message; checks distance from the last saved point and appends a new one to the CSV once it's moved 0.1m.
 
@@ -115,6 +119,8 @@ Dynamic obstacles: since the LiDAR scan is re-read fresh every 20Hz cycle with n
 - `rollout()` — takes a batch of sampled control sequences and simulates them forward through a differential-drive model to get predicted trajectories.
 - `control_loop()` — the actual MPPI cycle: finds the nearest path point, builds the reference, samples trajectories, scores them (path + obstacle + control cost), takes the weighted average, publishes `/cmd_vel`, and shifts the sequence for next time.
 - `publish_cmd()` — wraps a (v, w) pair into a `TwistStamped` and publishes it.
+
+</details>
 
 ---
 
