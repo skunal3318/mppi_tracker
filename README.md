@@ -1,6 +1,6 @@
 # MPPI Trajectory Tracker
 
-A ROS2 MPPI (Model Predictive Path Integral) controller that tracks a recorded path and avoids static and dynamic obstacles in real time. Built for the Flo Mobility robotics assignment.
+A ROS2 MPPI controller that tracks a recorded path and avoids static and dynamic obstacles in real time..
 
 ## Demo
 
@@ -31,36 +31,36 @@ This replaces a reference Pure Pursuit controller with an MPPI implementation wr
 ## Quick Start
 
 ```bash
-# Terminal 1 — simulation (plain empty world, no competing controller)
+# Terminal 1 [simulation]
 export TURTLEBOT3_MODEL=burger
 ros2 launch turtlebot3_gazebo empty_world.launch.py
 
-# Terminal 2 — RViz
+# Terminal 2 [RViz]
 ros2 run rviz2 rviz2
 # Set Fixed Frame to "odom", then Add → By topic:
 #   /mppi/recorded_path_marker  (green — recorded path)
 #   /mppi/traversed_path_marker (red — actual driven path)
 #   /scan, RobotModel
 
-# Terminal 3 — record a path (drive with teleop while this runs)
+# Terminal 3 [record a path (use teleop to drive)]
 ros2 run mppi_tracker record_path --ros-args -p output_file:=/tmp/my_path.csv
 
-# Terminal 4 — track it
+# Terminal 4 [track recorded path]
 ros2 launch mppi_tracker mppi_tracker_launch.py path_file:=/tmp/my_path.csv
 ```
 
 Note: don't use `nav`'s own `sim_bringup.py` for this — it also starts the reference Pure Pursuit node, which will fight the MPPI tracker for `/cmd_vel`.
 
-All tuning lives in `config/mppi_params.yaml`.
+All tuning listed in `config/mppi_params.yaml`.
 
 ## Test Results
 
 | Case | Setup | Result (video in `media/`) |
 |---|---|---|
-| **1 — Straight + obstacle** | One obstacle on a straight recorded path | Detours around it and rejoins the line, no contact |
-| **2 — Curved + obstacle** | Obstacle on a recorded curve | Tracks the curve, detours around the obstacle, rejoins |
-| **3 — Two obstacles flanking the path** | A cylinder on each side of the path, ~1.9m apart | Shifts to hold clearance and passes between them |
-| **4 — Self-crossing loop** | Loop path that crosses itself, no obstacles | Follows the whole loop through the crossing, no circling |
+| **1. Straight + obstacle** | One obstacle on a straight recorded path | Detours around it and rejoins the line, no contact |
+| **2. Curved + obstacle** | Obstacle on a recorded curve | Tracks the curve, detours around the obstacle, rejoins |
+| **3. Two obstacles flanking the path** | A cylinder on each side of the path, ~1.9m apart | Shifts to hold clearance and passes between them |
+| **4. Self-crossing loop** | Loop path that crosses itself, no obstacles | Follows the whole loop through the crossing, no circling |
 
 Full-length screen recordings per case are in [`media/`](media/); data-level replays are in `media/sim_replays/`.
 
@@ -146,3 +146,6 @@ mppi_tracker/
 ├── package.xml
 └── setup.py
 ```
+
+## Author
+Kunal Yadav
