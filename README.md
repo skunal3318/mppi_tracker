@@ -15,8 +15,18 @@
 A ROS2 MPPI controller that tracks a recorded path and avoids static and dynamic obstacles in real time.
 </p>
 
-### Contents
-[Demo](#demo) · [Overview](#overview) · [Quick Start](#quick-start) · [Test Results](#test-results) · [How It Works](#how-it-works) · [Notes](#notes) · [Repository Structure](#repository-structure)
+<details>
+<summary>📑 Contents</summary>
+
+- [Demo](#demo)
+- [Overview](#overview)
+- [Quick Start](#quick-start)
+- [Test Results](#test-results)
+- [How It Works](#how-it-works)
+- [Notes](#notes)
+- [Repository Structure](#repository-structure)
+
+</details>
 
 ---
 
