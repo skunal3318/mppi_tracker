@@ -47,12 +47,14 @@ The previews above are plotted replays rendered straight from logged `/odom`, `/
 
 ## Overview
 
-This replaces a reference Pure Pursuit controller with an MPPI implementation written from scratch. The main design choice: path-tracking and obstacle avoidance are both terms in one cost function, not two separate behaviors. There's no "avoiding" mode and no "resuming" mode. Every control cycle scores about 500 sampled trajectories against a single combined score, and the detour-and-rejoin behavior comes out of that scoring on its own.
+This replaces a reference Pure Pursuit controller with an MPPI implementation. The main design choice: path-tracking and obstacle avoidance are both terms in one cost function, not two separate behaviors. There's no "avoiding" mode and no "resuming" mode. Every control cycle scores about 500 sampled trajectories against a single combined score and the detour and rejoin behavior comes out of that scoring on its own.
 
 | Component | What it does |
 |---|---|
 | `record_path` | Logs `(x, y)` from `/odom` to CSV at 0.1m spacing |
 | `mppi_tracker` | Loads the CSV, drives the robot along it, avoids obstacles using live 360° LiDAR |
+
+---
 
 ## Quick Start
 
