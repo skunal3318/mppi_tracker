@@ -24,10 +24,10 @@ A ROS2 MPPI controller that tracks a recorded path and avoids static and dynamic
 
 | Case | Preview | Full video |
 |---|---|---|
-| **1 — Straight + obstacle** | <img src="media/sim_replays/case1.gif" width="220"/> | [`media/case1.mp4`](media/case1.mp4) |
-| **2 — Curved + obstacle** | <img src="media/sim_replays/case2.gif" width="220"/> | [`media/case2.mp4`](media/case2.mp4) |
-| **3 — Two obstacles flanking the path** | <img src="media/sim_replays/case3.gif" width="220"/> | [`media/case3.mp4`](media/case3.mp4) |
-| **4 — Self-crossing loop, no obstacles** | <img src="media/sim_replays/case4.gif" width="220"/> | [`media/case4.mp4`](media/case4.mp4) |
+| **1. Straight + obstacle** | <img src="media/sim_replays/case1.gif" width="220"/> | [`media/case1.mp4`](media/case1.mp4) |
+| **2. Curved + obstacle** | <img src="media/sim_replays/case2.gif" width="220"/> | [`media/case2.mp4`](media/case2.mp4) |
+| **3. Two obstacles flanking the path** | <img src="media/sim_replays/case3.gif" width="220"/> | [`media/case3.mp4`](media/case3.mp4) |
+| **4. Self-crossing loop, no obstacles** | <img src="media/sim_replays/case4.gif" width="220"/> | [`media/case4.mp4`](media/case4.mp4) |
 | **Dynamic obstacle, dropped mid-run** | <img src="media/sim_replays/dynamic_obstacle.gif" width="220"/> | [`media/dynamic_obstacle.mp4`](media/dynamic_obstacle.mp4) |
 | **Baseline — no obstacles** | — | [`media/straight_no_obstacle.mp4`](media/straight_no_obstacle.mp4) |
 
