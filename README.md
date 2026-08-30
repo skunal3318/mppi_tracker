@@ -22,6 +22,7 @@ A ROS2 MPPI controller that tracks a recorded path and avoids static and dynamic
 - [Overview](#overview)
 - [Quick Start](#quick-start)
 - [Test Results](#test-results)
+- [Code Reference](#code-reference)
 - [How It Works](#how-it-works)
 - [Notes](#notes)
 - [Repository Structure](#repository-structure)
@@ -92,7 +93,7 @@ All tuning listed in `config/mppi_params.yaml`.
 | **3. Two obstacles flanking the path** | A cylinder on each side of the path, ~1.9m apart | Shifts to hold clearance and passes between them |
 | **4. Self-crossing loop** | Loop path that crosses itself, no obstacles | Follows the whole loop through the crossing, no circling |
 
-Dynamic obstacles: since the LiDAR scan is re-read fresh every 20Hz cycle with no caching, moving or newly-added obstacles get handled by the exact same code path as static ones.[check the dynamic obstacle demo above]
+Dynamic obstacles: since the LiDAR scan is re-read fresh every 20Hz cycle with no caching, moving or newly-added obstacles get handled by the exact same code path as static ones.Check the [dynamic obstacle demo](#demo)
 
 ---
 
@@ -137,7 +138,7 @@ If a trajectory clips an obstacle, it scores worse — no matter how well it was
 </details>
 
 <details>
-<summary><b>BUG : founded during testing that self-intersecting paths caused infinite circling</b></summary>
+<summary><b>A bug I found during testing: self-intersecting paths caused infinite circling</b></summary>
 <br>
 
 **What happened:** on a path that looped back and crossed itself, the tracker would get stuck right at that crossing point, circling instead of pushing through.
