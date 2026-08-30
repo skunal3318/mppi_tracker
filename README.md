@@ -90,7 +90,7 @@ All tuning listed in `config/mppi_params.yaml`.
 | **3. Two obstacles flanking the path** | A cylinder on each side of the path, ~1.9m apart | Shifts to hold clearance and passes between them |
 | **4. Self-crossing loop** | Loop path that crosses itself, no obstacles | Follows the whole loop through the crossing, no circling |
 
-Dynamic obstacles: since the LiDAR scan is re-read fresh every 20Hz cycle with no caching, moving or newly-added obstacles get handled by the exact same code path as static ones. No special-casing needed — see the dynamic obstacle demo above.
+Dynamic obstacles: since the LiDAR scan is re-read fresh every 20Hz cycle with no caching, moving or newly-added obstacles get handled by the exact same code path as static ones.[check the dynamic obstacle demo above]
 
 ## How It Works
 
@@ -102,30 +102,32 @@ Dynamic obstacles: since the LiDAR scan is re-read fresh every 20Hz cycle with n
 <summary><b>Why one cost function instead of a stop-and-wait state machine</b></summary>
 <br>
 
-The reference implementation handles obstacles with a hard rule: if something enters a 120° frontal cone within 0.5m, stop and wait. That's safe, but it can't produce a detour — the robot only has two states, moving and stopped.
+The reference implementation deals with obstacles through a hard rule: if something gets within 0.5m in a 120° cone in front of the robot, stop and wait. It's safe, but it can only do two things — move, or stop. There's no way for it to actually go around something.
 
-MPPI doesn't need that split. Obstacle proximity is just another term in the same cost every candidate trajectory gets scored on:
+MPPI doesn't need that split at all. Obstacle proximity is just one more thing added into the same cost that every candidate trajectory gets judged on:
 
-```
+\`\`\`
 total_cost = w_path × (deviation from local path reference)
            + w_obstacle × (proximity to LiDAR obstacle points)
            + w_control × (control effort)
-```
+\`\`\`
 
-A trajectory that clips an obstacle scores worse no matter how well it tracks the path. A trajectory that curves around and rejoins scores well on both terms at once. There's no explicit decision to "avoid" and then a separate one to "resume" — it's the same weighted average, every cycle. That's also why dynamic obstacles needed zero extra logic.
+If a trajectory clips an obstacle, it scores worse — no matter how well it was tracking the path otherwise. A trajectory that curves around the obstacle and comes back to the line scores well on both counts at once. Nothing ever explicitly decides "now avoid" and then separately decides "now resume" — it's the same weighted average, cycle after cycle. That's also the whole reason dynamic obstacles didn't need any extra code: the logic never knew the difference.
 </details>
 
 <details>
-<summary><b>A bug I found during testing: self-intersecting paths caused infinite circling</b></summary>
+<summary><b>BUG : founded during testing that self-intersecting paths caused infinite circling</b></summary>
 <br>
 
-**What happened:** on a driven path that crossed near itself (a loop), the tracker would get stuck circling right at the crossing point instead of continuing through.
+**What happened:** on a path that looped back and crossed itself, the tracker would get stuck right at that crossing point, circling instead of pushing through.
 
-**Why:** the tracker finds the closest point on the recorded path to the robot's current position each cycle, to build its local reference. At a self-crossing, the robot's position is nearly equidistant from two different points on the path — one before the loop, one partway through it. A plain global nearest-point search flip-flopped between the two from one cycle to the next, sending the reference alternately backward and forward.
+<img src="media/circling_bug.png" width="400" alt="Robot circling at the self-crossing point before the fix"/>
 
-**Fix:** I changed the nearest-point search from a global search to a small forward-looking window anchored to the previous match (with a little backward slack for noise). That makes progress along the path monotonic — it can't jump back to an earlier crossing of the same spot. The window size itself took some tuning too. Too wide, and a tight loop's far side falls inside the window and gets matched too early, skipping the loop. Too narrow, and the original flip-flop comes back. `nearest_search_window: 10` is what worked cleanly on the paths I tested.
+**Why:** every cycle, the tracker looks for the closest point on the recorded path to where the robot actually is, and uses that to build its next reference. Right at a self-crossing, the robot's position ends up almost equally close to two totally different points on the path — one from before it entered the loop, one from partway through it. A simple "find the closest point anywhere on the path" search kept jumping between those two from one cycle to the next, so the reference kept flipping backward and forward instead of moving forward.
 
-This ended up being the most interesting bug in the whole project — it's a correctness issue that only shows up on paths with real topological complexity, not something a straight line or single curve would ever surface.
+**Fix:** instead of searching the whole path every time, I made it only look in a small window just ahead of wherever it matched last cycle (with a bit of backward room built in, in case of noise). That keeps progress moving forward only — it can never jump back to an earlier point on the path, even one that looks close by. Getting the window size right took a bit of trial and error too. Too wide, and it would spot the far side of a tight loop too early and skip right over it. Too narrow, and the original back-and-forth came back. `nearest_search_window: 10` is what actually worked cleanly on the paths I tested.
+
+Honestly, this turned out to be the most interesting bug in the whole project — the kind of thing that only shows up once your path has real complexity to it, not something you'd ever catch testing a straight line or a single curve.
 </details>
 
 <details>
