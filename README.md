@@ -70,27 +70,8 @@ Dynamic obstacles: since the LiDAR scan is re-read fresh every 20Hz cycle with n
 
 ![MPPI system flowchart](media/mppi_flowchart.svg)
 
-```
-                 ┌─────────────┐   ┌──────────────┐
-   Recorded  ──▶ │   Local     │   │  360° LiDAR  │
-   path (CSV)    │  reference  │   │   → obstacle │
-                 │  (ahead of  │   │     points    │
-                 │   robot)    │   └──────┬───────┘
-                 └──────┬──────┘          │
-                        ▼                 ▼
-              ┌────────────────────────────────┐
-              │   500 sampled trajectories      │
-              │   scored on ONE combined cost:   │
-              │   path-tracking + obstacle +     │
-              │   control-smoothness             │
-              └────────────────┬─────────────────┘
-                                ▼
-                   cost-weighted average → /cmd_vel
-```
 
-Each cycle: sample controls around a warm-started nominal sequence, roll them out through a differential-drive model, score every trajectory against the combined cost, take the weighted average as the executed command, then shift the sequence for the next cycle (receding horizon).
-
-## Engineering Notes
+## Notes
 
 <details>
 <summary><b>Why one cost function instead of a stop-and-wait state machine</b></summary>
