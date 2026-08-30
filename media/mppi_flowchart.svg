@@ -1,0 +1,99 @@
+<svg width="920" height="900" viewBox="0 0 920 900" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M1 1L9 5L1 9" fill="none" stroke="#333" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <rect width="920" height="900" fill="#ffffff"/>
+
+  <!-- ============ STAGE 1: RECORDING ============ -->
+  <text x="460" y="34" text-anchor="middle" font-size="16" font-weight="700" fill="#111">Step 1 — Recording a path</text>
+
+  <rect x="40" y="60" width="180" height="56" rx="10" fill="#e8eef7" stroke="#4a6fa5" stroke-width="1.5"/>
+  <text x="130" y="82" text-anchor="middle" font-size="13" font-weight="600" fill="#1f3a5f">You drive the robot</text>
+  <text x="130" y="100" text-anchor="middle" font-size="11" fill="#3a557a">with teleop</text>
+
+  <rect x="280" y="60" width="200" height="56" rx="10" fill="#dceee0" stroke="#3f8a52" stroke-width="1.5"/>
+  <text x="380" y="82" text-anchor="middle" font-size="13" font-weight="600" fill="#1e4a2a">record_path node</text>
+  <text x="380" y="100" text-anchor="middle" font-size="11" fill="#2c6b3d">saves a point every 0.1m</text>
+
+  <rect x="540" y="60" width="180" height="56" rx="10" fill="#f5eede" stroke="#b8863c" stroke-width="1.5"/>
+  <text x="630" y="82" text-anchor="middle" font-size="13" font-weight="600" fill="#6b4a1a">path.csv</text>
+  <text x="630" y="100" text-anchor="middle" font-size="11" fill="#8a6428">your driven route</text>
+
+  <line x1="220" y1="88" x2="278" y2="88" stroke="#333" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="480" y1="88" x2="538" y2="88" stroke="#333" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <line x1="630" y1="116" x2="630" y2="150" stroke="#333" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- ============ STAGE 2: TRACKING ============ -->
+  <text x="460" y="185" text-anchor="middle" font-size="16" font-weight="700" fill="#111">Step 2 — Following it back (this whole loop runs 20 times a second)</text>
+
+  <!-- Inputs row -->
+  <rect x="80" y="210" width="200" height="60" rx="10" fill="#f5eede" stroke="#b8863c" stroke-width="1.5"/>
+  <text x="180" y="234" text-anchor="middle" font-size="13" font-weight="600" fill="#6b4a1a">path.csv</text>
+  <text x="180" y="252" text-anchor="middle" font-size="11" fill="#8a6428">the route to follow</text>
+
+  <rect x="360" y="210" width="200" height="60" rx="10" fill="#e8eef7" stroke="#4a6fa5" stroke-width="1.5"/>
+  <text x="460" y="234" text-anchor="middle" font-size="13" font-weight="600" fill="#1f3a5f">/odom</text>
+  <text x="460" y="252" text-anchor="middle" font-size="11" fill="#3a557a">where the robot is right now</text>
+
+  <rect x="640" y="210" width="200" height="60" rx="10" fill="#f2e2e6" stroke="#a34f63" stroke-width="1.5"/>
+  <text x="740" y="234" text-anchor="middle" font-size="13" font-weight="600" fill="#6b2436">/scan</text>
+  <text x="740" y="252" text-anchor="middle" font-size="11" fill="#8a3f52">what the LiDAR sees, 360°</text>
+
+  <!-- Down arrows into processing -->
+  <line x1="180" y1="270" x2="300" y2="320" stroke="#333" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="460" y1="270" x2="460" y2="320" stroke="#333" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="740" y1="270" x2="620" y2="320" stroke="#333" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Processing box 1: local reference -->
+  <rect x="230" y="320" width="260" height="70" rx="10" fill="#eef1f6" stroke="#556" stroke-width="1.5"/>
+  <text x="360" y="345" text-anchor="middle" font-size="13" font-weight="600" fill="#222">Find where we are on the path</text>
+  <text x="360" y="362" text-anchor="middle" font-size="10.5" fill="#444">only looks forward from last time —</text>
+  <text x="360" y="377" text-anchor="middle" font-size="10.5" fill="#444">this is what fixed the looping bug</text>
+
+  <!-- Processing box 2: obstacle points -->
+  <rect x="510" y="320" width="230" height="70" rx="10" fill="#f7ecee" stroke="#a34f63" stroke-width="1.5"/>
+  <text x="625" y="345" text-anchor="middle" font-size="13" font-weight="600" fill="#5c2032">Turn the scan into obstacles</text>
+  <text x="625" y="362" text-anchor="middle" font-size="10.5" fill="#7a3548">converts raw LiDAR angles into</text>
+  <text x="625" y="377" text-anchor="middle" font-size="10.5" fill="#7a3548">real (x, y) points around the robot</text>
+
+  <line x1="360" y1="390" x2="440" y2="440" stroke="#333" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="625" y1="390" x2="500" y2="440" stroke="#333" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Sampling box -->
+  <rect x="220" y="440" width="480" height="70" rx="10" fill="#ece7f4" stroke="#6b4fa3" stroke-width="1.5"/>
+  <text x="460" y="466" text-anchor="middle" font-size="14" font-weight="700" fill="#3a2560">Try 500 different ways to move next</text>
+  <text x="460" y="486" text-anchor="middle" font-size="11" fill="#4d3570">each one a short guess at speed + turn, played forward in time</text>
+
+  <line x1="460" y1="510" x2="460" y2="545" stroke="#333" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Combined cost box -->
+  <rect x="150" y="545" width="620" height="110" rx="10" fill="#ece7f4" stroke="#6b4fa3" stroke-width="2"/>
+  <text x="460" y="573" text-anchor="middle" font-size="14" font-weight="700" fill="#3a2560">Grade every one of those 500 guesses, all on one scorecard</text>
+  <text x="460" y="600" text-anchor="middle" font-size="12.5" font-family="Menlo, monospace" fill="#2a1a4a">score = how far off the path</text>
+  <text x="460" y="620" text-anchor="middle" font-size="12.5" font-family="Menlo, monospace" fill="#2a1a4a">+ how close to an obstacle</text>
+  <text x="460" y="640" text-anchor="middle" font-size="12.5" font-family="Menlo, monospace" fill="#2a1a4a">+ how jerky the motion is</text>
+
+  <line x1="460" y1="655" x2="460" y2="690" stroke="#333" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Weighted average -->
+  <rect x="260" y="690" width="400" height="60" rx="10" fill="#dceee0" stroke="#3f8a52" stroke-width="1.5"/>
+  <text x="460" y="714" text-anchor="middle" font-size="13" font-weight="600" fill="#1e4a2a">Blend the best-scoring guesses together</text>
+  <text x="460" y="732" text-anchor="middle" font-size="11" fill="#2c6b3d">the better a guess scored, the more it counts</text>
+
+  <line x1="460" y1="750" x2="460" y2="785" stroke="#333" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- cmd_vel output -->
+  <rect x="330" y="785" width="260" height="56" rx="10" fill="#dceee0" stroke="#3f8a52" stroke-width="1.5"/>
+  <text x="460" y="807" text-anchor="middle" font-size="13" font-weight="600" fill="#1e4a2a">send that as /cmd_vel</text>
+  <text x="460" y="825" text-anchor="middle" font-size="11" fill="#2c6b3d">the robot takes one small step</text>
+
+  <!-- Feedback loop -->
+  <path d="M 590 813 C 780 813, 820 500, 820 300 C 820 260, 780 245, 745 240"
+        fill="none" stroke="#888" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#arrow)"/>
+  <text x="835" y="530" font-size="11" fill="#666" text-anchor="middle" transform="rotate(-90 835 530)">then it all happens again — nothing is remembered from last time</text>
+
+</svg>

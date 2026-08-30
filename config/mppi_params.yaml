@@ -1,0 +1,21 @@
+/**:
+  ros__parameters:
+    path_file: "/tmp/test_path.csv"
+    num_samples: 500
+    horizon: 30
+    dt: 0.1
+    desired_speed: 0.2
+    max_linear_vel: 0.22
+    max_angular_vel: 1.5
+    noise_std_v: 0.08
+    noise_std_w: 0.6
+    lambda_temp: 1.0
+    w_path: 15.0
+    w_control: 0.05
+    w_obstacle: 1200.0
+    safety_radius: 0.45
+    scan_max_range: 3.5
+    scan_downsample: 5
+    goal_tolerance: 0.2
+    control_rate: 20.0
+    nearest_search_window: 10
