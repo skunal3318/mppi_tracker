@@ -35,12 +35,12 @@ A ROS2 MPPI controller that tracks a recorded path and avoids static and dynamic
 
 | Case | Preview | Full video |
 |---|---|---|
-| **1. Straight + obstacle** | <img src="media/sim_replays/case1.gif" width="220"/> | [Watch on Drive](https://drive.google.com/drive/folders/1r24bwaXrKvyS6vVTc_5Nz41_56nwCPC_?usp=sharing) |
-| **2. Curved + obstacle** | <img src="media/sim_replays/case2.gif" width="220"/> | [Watch on Drive](https://drive.google.com/drive/folders/1r24bwaXrKvyS6vVTc_5Nz41_56nwCPC_?usp=sharing) |
-| **3. Two obstacles flanking the path** | <img src="media/sim_replays/case3.gif" width="220"/> | [Watch on Drive](https://drive.google.com/drive/folders/1r24bwaXrKvyS6vVTc_5Nz41_56nwCPC_?usp=sharing) |
-| **4. Self-crossing loop, no obstacles** | <img src="media/sim_replays/case4.gif" width="220"/> | [Watch on Drive](https://drive.google.com/drive/folders/1r24bwaXrKvyS6vVTc_5Nz41_56nwCPC_?usp=sharing) |
-| **Dynamic obstacle, dropped mid-run** | <img src="media/sim_replays/dynamic_obstacle.gif" width="220"/> | [Watch on Drive](https://drive.google.com/drive/folders/1r24bwaXrKvyS6vVTc_5Nz41_56nwCPC_?usp=sharing) |
-| **Baseline — no obstacles** | — | [Watch on Drive](https://drive.google.com/drive/folders/1r24bwaXrKvyS6vVTc_5Nz41_56nwCPC_?usp=sharing) |
+| **1. Straight + obstacle** | <img src="media/sim_replays/case1.gif" width="220"/> | [Watch on Drive](https://drive.google.com/file/d/1PBYUVVRhlD2r5Xij40hAaGDruuKw4u3a/view?usp=sharing) |
+| **2. Curved + obstacle** | <img src="media/sim_replays/case2.gif" width="220"/> | [Watch on Drive](https://drive.google.com/file/d/1Ts57-9Bx35FbcCJplZy6oyGqlj8MFqVO/view?usp=sharing) |
+| **3. Two obstacles flanking the path** | <img src="media/sim_replays/case3.gif" width="220"/> | [Watch on Drive](https://drive.google.com/file/d/1pcW_l9WR2aoPUC10HY4q54SrtcGoPLV6/view?usp=sharing) |
+| **4. Self-crossing loop, no obstacles** | <img src="media/sim_replays/case4.gif" width="220"/> | [Watch on Drive](https://drive.google.com/file/d/1matYPe8xidH7TPyjGICsK6c1c92SKB8K/view?usp=sharing) |
+| **Dynamic obstacle, dropped mid-run** | <img src="media/sim_replays/dynamic_obstacle.gif" width="220"/> | [Watch on Drive](https://drive.google.com/file/d/1cVFTp4CI9nLjPNbablG1Lit4--k10se7/view?usp=sharing) |
+| **Baseline — no obstacles** | — | [Watch on Drive](https://drive.google.com/file/d/1hiePz81N1Ngxjsm54DO3OWdZs8ry3Zdz/view?usp=sharing) |
 
 The previews above are plotted replays rendered straight from logged `/odom`, `/scan`, and `/cmd_vel` data — green is the recorded path, red is the actual driven path. 
 
