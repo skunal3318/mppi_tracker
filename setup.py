@@ -18,7 +18,7 @@ setup(
     maintainer='kunal-jazzy',
     maintainer_email='kunal780954@gmail.com',
     description='MPPI TRACKER PACKAGE',
-    license='TODO: License declaration',
+    license='MIT',
     extras_require={
         'test': [
             'pytest',

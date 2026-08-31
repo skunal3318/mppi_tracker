@@ -3,9 +3,9 @@
 <package format="3">
   <name>mppi_tracker</name>
   <version>0.0.0</version>
-  <description>TODO: Package description</description>
+  <description>MPPI TRACKER PACKAGE</description>
   <maintainer email="kunal780954@gmail.com">kunal-jazzy</maintainer>
-  <license>MPPI TRACKER PACKAGE</license>
+  <license>MIT</license>
 
   <depend>rclpy</depend>
   <depend>nav_msgs</depend>
